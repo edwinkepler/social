@@ -72,7 +72,7 @@
         }
 
         if(empty($error_array)) {
-            $password = password_hash($password, PASSWORD_DEFAULT); // Encrypt password before sending to database
+            $password = md5($password); // Encrypt password before sending to database
 
             // Generate username by concatinating first name and last name
             $username = strtolower($fname . "_" . $lname);

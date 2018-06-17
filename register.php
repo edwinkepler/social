@@ -1,12 +1,27 @@
 <?php
     require("config/config.php");
     require("includes/form_handlers/register_handler.php");
+    require("includes/form_handlers/login_handler.php");
 ?>
 <html>
 <head>
     <title>Welcome to Swirlfeed</title>
 </head>
 <body>
+    <form action="register.php" method="POST">
+        <input type="email" name="log_email" placeholder="Email address" value="<?php if(isset($_SESSION['log_email'])) { echo $_SESSION['log_email']; } ?>" required>
+        <br>
+        <input type="password" name="log_password" placeholder="Password" required>
+        <br>
+        <input type="submit" name="login_button" value="Login">
+        <br>
+        <?php
+            if(in_array("Email or password was incorrect<br>", $error_array)) {
+                echo "Email or password was incorrect<br>";
+            }
+        ?>
+    </form>
+
     <form action="register.php" method="POST">
         <input type="text" name="reg_fname" placeholder="First name" 
         value="<?php if(isset($_SESSION['req_fname'])) { echo $_SESSION['req_fname']; } ?>" required>
