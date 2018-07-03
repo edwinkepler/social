@@ -48,20 +48,16 @@ class Post
         $str = ""; // string to return
         $data = mysqli_query($this->con, "SELECT * FROM posts WHERE deleted='no' ORDER BY id DESC");
 
-        while ($row = mysqli_fetch_array($data))
-        {
+        while ($row = mysqli_fetch_array($data)) {
             $id = $row["id"];
             $body = $row["body"];
             $added_by = $row["added_by"];
             $date_time = $row["date_added"];
 
             // Prepare user_to string so it can be included even if not posted to a user
-            if ($row["user_to"] == "none")
-            {
+            if ($row["user_to"] == "none") {
                 $user_to = "";
-            }
-            else
-            {
+            } else {
                 $user_to_obj = new User($this->con, $row["user_to"]);
                 $user_to_name = $user_to_object->getFirstAndLastName();
                 $user_to = "to <a href='" . $row["user_to"] . "'>" . $user_to_name . "</a>";
@@ -69,8 +65,7 @@ class Post
 
             // Check if user who posted, has their account closed
             $added_by_obj = new User($this->con, $added_by);
-            if ($added_by_obj->isClosed())
-            {
+            if ($added_by_obj->isClosed()) {
                 continue;
             }
 
@@ -85,82 +80,48 @@ class Post
             $start_date = new DateTime($date_time); // Time of post
             $end_date = new DateTime($date_time_now); // Current time
             $interval = $start_date->diff($end_date); // Difference between dates
-            if ($interval->y >= 1)
-            {
-                if ($interval == 1)
-                {
+            if ($interval->y >= 1) {
+                if ($interval == 1) {
                     $time_message = $interval->y . " year ago"; // 1 year ago
-                }
-                else
-                {
+                } else {
                     $time_message = $interval->y . " years ago"; // More then 1 year ago
                 }
-            }
-            elseif ($interval->m >= 1)
-            {
-                if ($interval->d == 0)
-                {
+            } elseif ($interval->m >= 1) {
+                if ($interval->d == 0) {
                     $days = " ago";
-                }
-                elseif ($interval->d == 1)
-                {
+                } elseif ($interval->d == 1) {
                     $days = $interval->d . " day ago";
-                }
-                else
-                {
+                } else {
                     $days = $interval->d . " days ago";
                 }
 
-                if ($interval->m == 1)
-                {
+                if ($interval->m == 1) {
                     $time_message = $interval->m . " month" . $days;
-                }
-                else
-                {
+                } else {
                     $time_message = $interval->m . " months" . $days;
                 }
-            }
-            elseif ($interval->d >= 1)
-            {
-                if ($interval->d == 1)
-                {
+            } elseif ($interval->d >= 1) {
+                if ($interval->d == 1) {
                     $time_message = "Yesterday";
-                }
-                else
-                {
+                } else {
                     $time_message = $interval->d . " days ago";
                 }
-            }
-            elseif ($interval->h >= 1)
-            {
-                if ($interval->h == 1)
-                {
+            } elseif ($interval->h >= 1) {
+                if ($interval->h == 1) {
                     $time_message = $interval->h . " hour ago";
-                }
-                else
-                {
+                } else {
                     $time_message = $interval->h . " hours ago";
                 }
-            }
-            elseif ($interval->i >= 1)
-            {
-                if ($interval->i == 1)
-                {
+            } elseif ($interval->i >= 1) {
+                if ($interval->i == 1) {
                     $time_message = $interval->i . " minute ago";
-                }
-                else
-                {
+                } else {
                     $time_message = $interval->i . " minutes ago";
                 }
-            }
-            else
-            {
-                if ($interval->s < 30)
-                {
+            } else {
+                if ($interval->s < 30) {
                     $time_message = "Just now";
-                }
-                else
-                {
+                } else {
                     $time_message = $interval->s . " seconds ago";
                 }
             }
